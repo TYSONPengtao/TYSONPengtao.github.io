@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>记忆本位积训练</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .frame-left {
+            width: 350px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .frame-right {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #4a4a8c;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .large-font {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .entry {
+            width: 100%;
+            font-size: 16px;
+            padding: 12px;
+            margin: 5px 0 15px;
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 44px; /* 符合移动端最小触摸目标要求 */
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        #next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        #check-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        #toggle-img-btn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        
+        #exit-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+        
+        #result-label {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            min-height: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            scroll-margin: 20px;
+        }
+        
+        #image-label {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            object-fit: contain;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .number-display {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 平板及以下屏幕 */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .frame-left {
+                width: 100%;
+                margin-bottom: 20px;
+                padding: 15px;
+            }
+            
+            .frame-right {
+                margin-left: 0;
+                padding: 10px;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .number-display {
+                font-size: 28px;
+                padding: 12px;
+            }
+            
+            .large-font {
+                font-size: 16px;
+            }
+            
+            select, input, .button {
+                padding: 14px;
+                font-size: 16px; /* 防止iOS缩放 */
+            }
+            
+            #result-label {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+        
+        /* 小屏幕手机优化 */
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .frame-left {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .number-display {
+                font-size: 24px;
+                padding: 10px;
+            }
+            
+            label {
+                font-size: 15px;
+            }
+            
+            .button-group {
+                gap: 10px;
+                margin: 15px 0;
+            }
+        }
+        
+        /* 超小屏幕优化 */
+        @media (max-width: 360px) {
+            .frame-left {
+                padding: 8px;
+            }
+            
+            h1 {
+                font-size: 16px;
+            }
+            
+            .number-display {
+                font-size: 20px;
+            }
+            
+            .large-font, label {
+                font-size: 14px;
+            }
+            
+            select, input, .button {
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="frame-left">
+        <h1>记忆本位积训练</h1>
+        
+        <div class="form-group">
+            <label class="large-font">选择repo类型:</label>
+            <select id="repo-num" class="large-font">
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="large-font">3位随机数:</label>
+            <div id="num-label" class="number-display">-</div>
+        </div>
+        
+        <div class="form-group">
+            <label class="large-font">请输入开头:</label>
+            <input type="text" id="start-entry" class="entry" placeholder="+数字">
+        </div>
+        
+        <div class="form-group">
+            <label class="large-font">请输入进位:</label>
+            <input type="text" id="carry-entry" class="entry" placeholder="-数字">
+        </div>
+        
+        <div id="result-label"></div>
+        
+        <div class="button-group">
+            <button id="next-btn" class="button">下一题</button>
+            <button id="check-btn" class="button">提交答案</button>
+            <button id="toggle-img-btn" class="button">收起图片</button>
+            <button id="exit-btn" class="button">退出</button>
+        </div>
+    </div>
+    
+    <div class="frame-right">
+        <img id="image-label" src="" alt="记忆图像">
+    </div>
+
+    <script>
+        class MemoryApp {
+            constructor() {
+                this.repoNum = 3;
+                this.num = 0;
+                this.correctStart = "";
+                this.correctCarry = "";
+                this.count = 0;
+                this.imageVisible = true;
+                this.currentImgDict = {};
+                // 修改为相对路径，因为图片与index.html在同一目录下
+                this.folder = "./"; 
+
+                // 元素引用
+                this.repoSelect = document.getElementById('repo-num');
+                this.numLabel = document.getElementById('num-label');
+                this.startEntry = document.getElementById('start-entry');
+                this.carryEntry = document.getElementById('carry-entry');
+                this.resultLabel = document.getElementById('result-label');
+                this.nextBtn = document.getElementById('next-btn');
+                this.checkBtn = document.getElementById('check-btn');
+                this.toggleImgBtn = document.getElementById('toggle-img-btn');
+                this.exitBtn = document.getElementById('exit-btn');
+                this.imageLabel = document.getElementById('image-label');
+                this.frameRight = document.querySelector('.frame-right');
+
+                // 预加载图片
+                this.preloadImages();
+
+                // 事件绑定
+                this.repoSelect.addEventListener('change', this.reset.bind(this));
+                this.nextBtn.addEventListener('click', this.nextQuestion.bind(this));
+                this.checkBtn.addEventListener('click', this.checkAnswer.bind(this));
+                this.toggleImgBtn.addEventListener('click', this.toggleImage.bind(this));
+                this.exitBtn.addEventListener('click', () => window.close()); // 模拟退出
+
+                // 初始化
+                this.nextQuestion();
+                this.showRepoImage();
+            }
+
+            preloadImages() {
+                for (let repo = 3; repo <= 8; repo++) {
+                    const extensions = ["jpg", "png"];
+                    for (let ext of extensions) {
+                        // 使用相对路径加载图片
+                        const imgPath = `${this.folder}${repo}.${ext}`;
+                        const img = new Image();
+                        img.src = imgPath;
+                        img.onload = () => {
+                            // 模拟 thumbnail，实际在 CSS 中控制大小
+                            this.currentImgDict[repo] = imgPath;
+                        };
+                        // 如果加载成功，停止尝试其他扩展
+                        if (img.complete) break;
+                    }
+                }
+            }
+
+            reset() {
+                this.repoNum = parseInt(this.repoSelect.value);
+                this.count = 0;
+                this.resultLabel.textContent = "";
+                this.numLabel.textContent = "-";
+                this.startEntry.value = "";
+                this.carryEntry.value = "";
+                this.nextQuestion();
+                this.showRepoImage();
+            }
+
+            nextQuestion() {
+                this.num = Math.floor(Math.random() * 900) + 100; // 100-999
+                this.numLabel.textContent = this.num;
+                this.startEntry.value = "";
+                this.carryEntry.value = "";
+                this.resultLabel.textContent = "";
+                this.setCorrectAnswer();
+                this.count += 1;
+                this.showRepoImage();
+                
+                // 在切换到新题目时自动滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            setCorrectAnswer() {
+                const [start, carry] = this.getCorrectAnswer(this.num, this.repoNum);
+                this.correctStart = start;
+                this.correctCarry = carry;
+            }
+
+            getCorrectAnswer(num, repo) {
+                const step = 1000 / repo;
+                for (let i = 0; i < repo; i++) {
+                    const low = i * step;
+                    const high = (i + 1) * step;
+                    if (low <= num && num < high || (i === repo - 1 && num >= high)) {
+                        return [`+${i}`, `-${repo - 1 - i}`];
+                    }
+                }
+                return ["?", "?"];
+            }
+
+            checkAnswer() {
+                const start = this.startEntry.value.trim();
+                const carry = this.carryEntry.value.trim();
+                if (start === this.correctStart && carry === this.correctCarry) {
+                    this.resultLabel.textContent = "输入正确！";
+                    this.resultLabel.style.backgroundColor = "rgba(46, 204, 113, 0.3)";
+                    this.resultLabel.style.color = "green";
+                } else {
+                    this.resultLabel.textContent = `输入错误，应为：开头${this.correctStart}，进位${this.correctCarry}`;
+                    this.resultLabel.style.backgroundColor = "rgba(231, 76, 60, 0.3)";
+                    this.resultLabel.style.color = "red";
+                }
+                
+                // 答案检查后自动滚动到结果区域
+                this.resultLabel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            showRepoImage() {
+                if (!this.imageVisible) {
+                    this.imageLabel.src = "";
+                    this.imageLabel.alt = "";
+                    return;
+                }
+                const imgPath = this.currentImgDict[this.repoNum];
+                if (imgPath) {
+                    this.imageLabel.src = imgPath;
+                    this.imageLabel.alt = `记忆图像 - 类型 ${this.repoNum}`;
+                } else {
+                    this.imageLabel.src = "";
+                    this.imageLabel.alt = `图片不存在: ${this.repoNum}.jpg`;
+                }
+            }
+
+            toggleImage() {
+                this.imageVisible = !this.imageVisible;
+                if (this.imageVisible) {
+                    this.toggleImgBtn.textContent = "收起图片";
+                    this.frameRight.classList.remove('hidden');
+                    this.showRepoImage();
+                } else {
+                    this.toggleImgBtn.textContent = "展开图片";
+                    this.frameRight.classList.add('hidden');
+                }
+            }
+        }
+
+        // 初始化应用
+        const app = new MemoryApp();
+    </script>
+</body>
+</html>
