@@ -1,69 +1,162 @@
-import Image from "next/image";
+const projects = [
+  {
+    number: "01",
+    title: "OSINT",
+    subtitle: "OPEN SOURCE INTELLIGENCE",
+    description:
+      "Tools for collecting, verifying and visualizing publicly available information.",
+    tags: ["Python", "Data", "Research"],
+    href: "#osint",
+  },
+  {
+    number: "02",
+    title: "DIGITAL TWIN",
+    subtitle: "PHYSICAL  DIGITAL",
+    description:
+      "Interactive 3D environments driven by real-time data, simulation and spatial intelligence.",
+    tags: ["Three.js", "3D", "FastAPI"],
+    href: "#digital-twin",
+  },
+  {
+    number: "03",
+    title: "LAB",
+    subtitle: "TOOLS & EXPERIMENTS",
+    description:
+      "Small tools, prototypes and experiments across AI, engineering, mathematics and automation.",
+    tags: ["AI", "Engineering", "Web"],
+    href: "#lab",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <main>
+      <nav className="nav">
+        <a className="logo" href="#">
+          TAO<span>.</span>
+        </a>
+
+        <div className="navLinks">
+          <a href="#projects">Projects</a>
+          <a href="#about">About</a>
+          <a
+            href="https://github.com/TYSONPengtao"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub 
+          </a>
+        </div>
+      </nav>
+
+      <section className="hero">
+        <div className="eyebrow">
+          OSINT  DIGITAL TWIN  AI  ENGINEERING
+        </div>
+
+        <h1>
+          Understanding the
+          <br />
+          <span>digital</span> and physical world.
+        </h1>
+
+        <p className="heroDescription">
+          I build tools, simulations and experiments at the intersection of
+          information intelligence, spatial computing and engineering.
+        </p>
+
+        <div className="heroActions">
+          <a className="primaryButton" href="#projects">
+            Explore Projects
+          </a>
+
+          <a
+            className="secondaryButton"
+            href="https://github.com/TYSONPengtao"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View GitHub 
+          </a>
+        </div>
+
+        <div className="scrollHint">SCROLL </div>
+      </section>
+
+      <section className="projectsSection" id="projects">
+        <div className="sectionHeader">
+          <span>SELECTED WORK</span>
+          <span>2026 </span>
+        </div>
+
+        <div className="projectGrid">
+          {projects.map((project) => (
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href={project.href}
+              className="projectCard"
+              key={project.title}
+              id={project.href.substring(1)}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <div className="projectTop">
+                <span className="projectNumber">{project.number}</span>
+                <span className="arrow"></span>
+              </div>
+
+              <div>
+                <p className="projectSubtitle">{project.subtitle}</p>
+                <h2>{project.title}</h2>
+                <p className="projectDescription">{project.description}</p>
+              </div>
+
+              <div className="tags">
+                {project.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="aboutSection" id="about">
+        <div className="aboutLabel">ABOUT</div>
+
+        <div className="aboutContent">
+          <h2>
+            Build.
+            <br />
+            Explore.
+            <br />
+            <span>Understand.</span>
+          </h2>
+
+          <p>
+            TAO is my personal technology lab. I explore open-source
+            intelligence, digital twins, artificial intelligence,
+            visualization and engineering tools  turning ideas into working
+            systems.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <footer>
+        <a className="logo" href="#">
+          TAO<span>.</span>
+        </a>
+
+        <div>
+          <p>TYSON PENGTAO</p>
+          <p>© 2026</p>
         </div>
-      </main>
-    </div>
+
+        <a
+          href="https://github.com/TYSONPengtao"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub 
+        </a>
+      </footer>
+    </main>
   );
 }
