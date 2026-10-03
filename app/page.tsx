@@ -6,7 +6,7 @@ const projects = [
     description:
       "Tools for collecting, verifying and visualizing publicly available information.",
     tags: ["Python", "Data", "Research"],
-    href: "#osint",
+    href: "/osint/",
   },
   {
     number: "02",
